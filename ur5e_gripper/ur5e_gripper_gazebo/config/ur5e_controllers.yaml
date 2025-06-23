@@ -1,0 +1,92 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: &loop_hz 500
+
+# Position Controllers ---------------------------------------
+$(arg prefix)shoulder_pan_joint_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg prefix)shoulder_pan_joint
+  pid: { p: 4000, d: 200, i: 1, i_clamp: 1 }
+$(arg prefix)shoulder_lift_joint_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg prefix)shoulder_lift_joint
+  pid: { p: 10000, d: 200, i: 1, i_clamp: 1 }
+$(arg prefix)elbow_joint_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg prefix)elbow_joint
+  pid: { p: 2000, d: 20, i: 1, i_clamp: 1 }
+$(arg prefix)wrist_1_joint_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg prefix)wrist_1_joint
+  pid: { p: 500, d: 1, i: 1, i_clamp: 1 }
+$(arg prefix)wrist_2_joint_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg prefix)wrist_2_joint
+  pid: { p: 500, d: 1, i: 1, i_clamp: 1 }
+$(arg prefix)wrist_3_joint_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg prefix)wrist_3_joint
+  pid: { p: 10, d: 0.1, i: 0, i_clamp: 1 }
+
+gripper_controller:
+  gripper_type: 'hand-e'
+  type: position_controllers/GripperActionController
+  joint: $(arg prefix)hande_left_finger_joint
+  action_monitor_rate: 20
+  goal_tolerance: 0.002
+  max_effort: 100
+  stall_velocity_threshold: 0.001
+  stall_timeout: 1.0
+
+
+joint_group_eff_pos_controller:
+  type: effort_controllers/JointGroupPositionController
+  joints: 
+    - $(arg prefix)shoulder_pan_joint
+    - $(arg prefix)shoulder_lift_joint
+    - $(arg prefix)elbow_joint
+    - $(arg prefix)wrist_1_joint
+    - $(arg prefix)wrist_2_joint
+    - $(arg prefix)wrist_3_joint
+  $(arg prefix)shoulder_pan_joint: 
+    pid : { p: 4000, d: 200, i: 1, i_clamp: 1 }
+  $(arg prefix)shoulder_lift_joint: 
+    pid: { p: 10000, d: 200, i: 1, i_clamp: 1 }
+  $(arg prefix)elbow_joint: 
+    pid: { p: 2000, d: 20, i: 1, i_clamp: 1 }
+  $(arg prefix)wrist_1_joint: 
+    pid: { p: 500, d: 1, i: 1, i_clamp: 1 }
+  $(arg prefix)wrist_2_joint: 
+    pid: { p: 500, d: 1, i: 1, i_clamp: 1 }
+  $(arg prefix)wrist_3_joint: 
+    pid: { p: 10, d: 0.1, i: 0, i_clamp: 1 }
+
+
+eff_joint_traj_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints: &robot_joints
+    - $(arg prefix)shoulder_pan_joint
+    - $(arg prefix)shoulder_lift_joint
+    - $(arg prefix)elbow_joint
+    - $(arg prefix)wrist_1_joint
+    - $(arg prefix)wrist_2_joint
+    - $(arg prefix)wrist_3_joint
+  gains: # Required because we're controlling an effort interface
+    $(arg prefix)shoulder_pan_joint: {p: 4000,  d: 200, i: 1, i_clamp: 1}
+    $(arg prefix)shoulder_lift_joint: {p: 10000,  d: 200, i: 1, i_clamp: 1}
+    $(arg prefix)elbow_joint: {p: 2000,  d: 20, i: 1, i_clamp: 1}
+    $(arg prefix)wrist_1_joint: {p: 500,  d: 1, i: 1, i_clamp: 1}
+    $(arg prefix)wrist_2_joint: {p: 500,  d: 1, i: 1, i_clamp: 1}
+    $(arg prefix)wrist_3_joint: {p: 10,  d: 0.1, i: 0, i_clamp: 1} 
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.05
+    $(arg prefix)shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+    $(arg prefix)shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+    $(arg prefix)elbow_joint: {trajectory: 0.1, goal: 0.1}
+    $(arg prefix)wrist_1_joint: {trajectory: 0.1, goal: 0.1}
+    $(arg prefix)wrist_2_joint: {trajectory: 0.1, goal: 0.1}
+    $(arg prefix)wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+  stop_trajectory_duration: 0.5
+  state_publish_rate: *loop_hz
+  action_monitor_rate: 10
