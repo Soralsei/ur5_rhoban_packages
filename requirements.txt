@@ -3,3 +3,5 @@ configobj
 PySide2
 pyyaml
 meshcat
+placo
+pinocchio
