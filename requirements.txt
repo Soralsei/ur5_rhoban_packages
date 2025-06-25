@@ -3,5 +3,5 @@ configobj
 PySide2
 pyyaml
 meshcat
-placo
+placo==0.9.11
 pinocchio
