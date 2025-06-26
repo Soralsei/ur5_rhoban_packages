@@ -1,6 +1,3 @@
-# TODO: Implement better trajectory duration handling (trajectory duration dichotomic search ?)
-# TODO: Verify check_acceleration method
-# TODO: Implement joint mask/unmask services
 import rospy
 import dynamic_reconfigure.server
 from ur5_kinematics.cfg import PlacoRosConfig

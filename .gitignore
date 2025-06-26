@@ -1,1 +1,3 @@
 .devcontainers
+__pycache__
+.pyc

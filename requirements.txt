@@ -2,6 +2,4 @@ jupyterlab
 configobj
 PySide2
 pyyaml
-meshcat
 placo==0.9.11
-pinocchio

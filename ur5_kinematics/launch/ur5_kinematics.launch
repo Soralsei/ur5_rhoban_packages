@@ -7,7 +7,7 @@
 
     <arg name="joint_state_topic" default="/joint_states" doc="Joint states topic" />
     
-    <arg name="frequency" default="500" doc="ROS controller topic to send commands to" />
+    <arg name="frequency" default="500" doc="Frequency for the numerical IK solver" />
 
     <arg name="self_collide" default="False" doc="Whether to handle self_collisions or not" />
     <arg name="collision_pairs" default="" doc="PlaCo collision pairs configuration file" />
